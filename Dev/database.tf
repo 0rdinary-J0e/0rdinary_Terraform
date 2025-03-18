@@ -36,7 +36,7 @@ resource "aws_db_instance" "ordinaryjoe_app_db" {
   storage_type            = "gp2"
   engine                  = "mysql"   # Change to your desired database engine
   engine_version          = "8.0"     # Specify the desired version
-  instance_class          = "db.t3.micro"
+  instance_class          = var.instance_type
   db_name                 = "ordinaryjoe_app_db"   # Corrected to use db_name
   username                = "admin"      # Username for the database
   password                = "password123" # Replace with a secure password

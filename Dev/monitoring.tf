@@ -27,7 +27,7 @@ resource "aws_s3_bucket" "ordinaryjoe_app_monitoring_bucket" {
 
   tags = {
     Name        = "ordinaryjoe_app_monitoring_bucket"
-    Environment = "UAT"
+    Environment = "Dev"
   }
 }
 

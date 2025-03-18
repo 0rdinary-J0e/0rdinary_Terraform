@@ -13,7 +13,7 @@ resource "aws_subnet" "public_subnet_1" {
   availability_zone       = "us-west-2a"
   map_public_ip_on_launch = true
   tags = {
-    Name = var.subnet_id[0]
+    Name = var.subnet_ids[0]
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "public_subnet_2" {
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = true
   tags = {
-    Name = var.subnet_id[1]
+    Name = var.subnet_ids[1]
   }
 }
 
@@ -32,7 +32,7 @@ resource "aws_subnet" "private_subnet_1" {
   cidr_block        = "10.0.3.0/24"
   availability_zone = "us-west-2a"
   tags = {
-    Name = var.subnet_id[2]
+    Name = var.subnet_ids[2]
   }
 }
 
@@ -41,7 +41,7 @@ resource "aws_subnet" "private_subnet_2" {
   cidr_block        = "10.0.4.0/24"
   availability_zone = "us-west-2b"
   tags = {
-    Name = var.subnet_id[3]
+    Name = var.subnet_ids[3]
   }
 }
 

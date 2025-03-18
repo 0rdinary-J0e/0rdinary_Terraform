@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "ordinaryjoe_app_bucket" {
   bucket = "ordinaryjoe-app-logs-${random_id.bucket_suffix.hex}"
 
   tags = {
-    Name = "ordinaryjoe-uat-app-logs"
+    Name = "ordinaryjoe-dev-app-logs"
   }
 }
 
