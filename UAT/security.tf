@@ -20,7 +20,7 @@ resource "aws_iam_role" "ordinaryjoe_app_ec2_role" {
 
 # IAM Policy to allow access to Secrets Manager
 resource "aws_iam_policy" "ordinaryjoe_app_secrets_manager_policy" {
-  name        = "ordinaryjoe-app-secrets-manager-policy"
+  name        = "ordinaryjoe-uat-secrets-manager-policy"
   description = "Allow EC2 to access Secrets Manager"
 
   policy = jsonencode({
@@ -45,7 +45,7 @@ resource "aws_iam_role_policy_attachment" "ordinaryjoe_app_attach_secrets_policy
 }
  
 #resource "aws_secretsmanager_secret" "ordinaryjoe_app_db_credentials" {
-#  name        = "ordinaryjoe-app-db-credentials"
+#  name        = "ordinaryjoe-uat-db-credentials"
 #  description = "Database credentials for the application"
 #}
 
@@ -60,8 +60,8 @@ resource "aws_iam_role_policy_attachment" "ordinaryjoe_app_attach_secrets_policy
 
 # Security Group for the Web Server
 resource "aws_security_group" "ordinaryjoe_app_web_sg" {
-  name   = "ordinaryjoe-app-web-sg"
-  vpc_id = aws_vpc.ordinaryjoe_app.id # Ensure this VPC is declared
+  name   = "ordinaryjoe-uat-web-sg"
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id # Ensure this VPC is declared
 
   # Allow HTTP traffic on port 80 from any IP
   ingress {

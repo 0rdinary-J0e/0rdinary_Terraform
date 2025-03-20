@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-2"
 }
 
 resource "aws_appmesh_mesh" "prod_mesh" {
@@ -8,12 +8,13 @@ resource "aws_appmesh_mesh" "prod_mesh" {
 
 resource "aws_athena_database" "prod_analytics" {
   name   = "prod_analytics_db"
-  bucket = "s3://prod-athena-logs/"
+  bucket = "ordinaryjoe-prod-athena-logs"
 }
 
-resource "aws_waf_web_acl" "prod_waf" {
+resource "aws_wafv2_web_acl" "prod_waf" {
   name        = "prod-waf-acl"
   scope       = "REGIONAL"
+  description = "Web ACL for prod environment"
 
   default_action {
     allow {}
@@ -38,5 +39,17 @@ resource "aws_waf_web_acl" "prod_waf" {
         }
       }
     }
+
+    visibility_config {
+      sampled_requests_enabled = true
+      cloudwatch_metrics_enabled = true
+      metric_name = "SQLInjectionRuleMetric"
+    }
+  }
+
+  visibility_config {
+    sampled_requests_enabled = true
+    cloudwatch_metrics_enabled = true
+    metric_name = "prod-waf-acl-metric"
   }
 }

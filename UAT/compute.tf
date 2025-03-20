@@ -1,7 +1,7 @@
 # Public EC2 Instances (Web Tier)
 resource "aws_instance" "ordinaryjoe_web_1" {
   ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet_1.id
   vpc_security_group_ids = [aws_security_group.vpc_web_sg.id]
 
@@ -21,7 +21,7 @@ resource "aws_instance" "ordinaryjoe_web_1" {
 
 resource "aws_instance" "ordinaryjoe_web_2" {
   ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet_2.id
   vpc_security_group_ids = [aws_security_group.vpc_web_sg.id]
 
@@ -42,12 +42,12 @@ resource "aws_instance" "ordinaryjoe_web_2" {
 # Private EC2 Instances (App Tier)
 resource "aws_instance" "ordinaryjoe_app_1" {
   ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.vpc_app_sg.id]
 
   tags = {
-    Name = "ordinaryjoe-app-1"
+    Name = "ordinaryjoe-uat-1"
   }
 
   user_data = <<-EOF
@@ -62,12 +62,12 @@ resource "aws_instance" "ordinaryjoe_app_1" {
 
 resource "aws_instance" "ordinaryjoe_app_2" {
   ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.private_subnet_2.id
   vpc_security_group_ids = [aws_security_group.vpc_app_sg.id]
 
   tags = {
-    Name = "ordinaryjoe-app-2"
+    Name = "ordinaryjoe-uat-2"
   }
 
   user_data = <<-EOF
@@ -82,7 +82,7 @@ resource "aws_instance" "ordinaryjoe_app_2" {
 
 # Lambda Function as Application Server
 # resource "aws_lambda_function" "ordinaryjoe_app_lambda" {
-#   function_name = "ordinaryjoe-app-lambda"
+#   function_name = "ordinaryjoe-uat-lambda"
 #   runtime       = "nodejs18.x"         # Ensure the runtime is supported
 #   handler       = "index.handler"      # Make sure this matches your code’s entry point
 
@@ -96,7 +96,7 @@ resource "aws_instance" "ordinaryjoe_app_2" {
 
 # IAM Role for Lambda Execution
 # resource "aws_iam_role" "lambda_execution_role" {
-#   name = "ordinaryjoe-app-lambda-role"
+#   name = "ordinaryjoe-uat-lambda-role"
 
 #   assume_role_policy = jsonencode({
 #     Version = "2012-10-17",

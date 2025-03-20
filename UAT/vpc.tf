@@ -1,67 +1,77 @@
 # Define the VPC
-resource "aws_vpc" "ordinaryjoe_app" {
+resource "aws_vpc" "ordinaryjoe-uat-uat" {
   cidr_block = "10.0.0.0/16"
   tags = {
-    Name = "ordinaryjoe-app-vpc"
+    Name = "ordinaryjoe-uat-vpc"
   }
 }
 
 # Define Public and Private Subnets
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id                  = aws_vpc.ordinaryjoe_app.id
+  vpc_id                  = aws_vpc.ordinaryjoe-uat-uat.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "us-west-2a"
   map_public_ip_on_launch = true
   tags = {
-    Name = "ordinaryjoe-app-public-subnet-1"
+    Name = var.subnet_ids[0]
   }
 }
 
 resource "aws_subnet" "public_subnet_2" {
-  vpc_id                  = aws_vpc.ordinaryjoe_app.id
+  vpc_id                  = aws_vpc.ordinaryjoe-uat-uat.id
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = true
   tags = {
-    Name = "ordinaryjoe-app-public-subnet-2"
+    Name = var.subnet_ids[1]
   }
 }
 
 resource "aws_subnet" "private_subnet_1" {
-  vpc_id            = aws_vpc.ordinaryjoe_app.id
+  vpc_id            = aws_vpc.ordinaryjoe-uat-uat.id
   cidr_block        = "10.0.3.0/24"
   availability_zone = "us-west-2a"
   tags = {
-    Name = "ordinaryjoe-app-private-subnet-1"
+    Name = var.subnet_ids[2]
   }
 }
 
 resource "aws_subnet" "private_subnet_2" {
-  vpc_id            = aws_vpc.ordinaryjoe_app.id
+  vpc_id            = aws_vpc.ordinaryjoe-uat-uat.id
   cidr_block        = "10.0.4.0/24"
   availability_zone = "us-west-2b"
   tags = {
-    Name = "ordinaryjoe-app-private-subnet-2"
+    Name = var.subnet_ids[3]
   }
+}
+
+resource "aws_subnet" "private_subnet_3" {
+    vpc_id           = aws_vpc.ordinaryjoe-uat-uat.id
+    cidr_block       = "10.0.5.0/24"
+    availability_zone = "us-west-2b"
+  tags = {
+    Name = var.subnet_ids[4]
+  }
+  
 }
 
 # Internet Gateway for public subnets
 resource "aws_internet_gateway" "ordinaryjoe_app_igw" {
-  vpc_id = aws_vpc.ordinaryjoe_app.id
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id
   tags = {
-    Name = "ordinaryjoe-app-igw"
+    Name = "ordinaryjoe-uat-igw"
   }
 }
 
 # Public Route Table with route to Internet Gateway
 resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.ordinaryjoe_app.id
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.ordinaryjoe_app_igw.id
   }
   tags = {
-    Name = "ordinaryjoe-app-public-rt"
+    Name = "ordinaryjoe-uat-public-rt"
   }
 }
 
@@ -78,7 +88,7 @@ resource "aws_route_table_association" "public_subnet_assoc_2" {
 
 # Security Groups
 resource "aws_security_group" "vpc_web_sg" {
-  vpc_id = aws_vpc.ordinaryjoe_app.id
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id
 
   ingress {
     from_port   = 80
@@ -100,7 +110,7 @@ resource "aws_security_group" "vpc_web_sg" {
 }
 
 resource "aws_security_group" "vpc_app_sg" {
-  vpc_id = aws_vpc.ordinaryjoe_app.id
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id
 
   ingress {
     from_port   = 80
@@ -117,12 +127,12 @@ resource "aws_security_group" "vpc_app_sg" {
   }
 
   tags = {
-    Name = "ordinaryjoe-app-sg"
+    Name = "ordinaryjoe-uat-sg"
   }
 }
 
 resource "aws_security_group" "lambda_sg" {
-  vpc_id = aws_vpc.ordinaryjoe_app.id
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id
 
   ingress {
     from_port   = 443

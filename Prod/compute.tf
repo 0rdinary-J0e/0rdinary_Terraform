@@ -1,7 +1,22 @@
+data "aws_ami" "latest_amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+}
+
 # Public EC2 Instances (Web Tier)
 resource "aws_instance" "ordinaryjoe-prod_web_1" {
-  ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  ami             =  data.aws_ami.latest_amazon_linux.id
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet_1.id
   vpc_security_group_ids = [aws_security_group.vpc_web_sg.id]
 
@@ -20,8 +35,8 @@ resource "aws_instance" "ordinaryjoe-prod_web_1" {
 }
 
 resource "aws_instance" "ordinaryjoe-prod_web_2" {
-  ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  ami             =  data.aws_ami.latest_amazon_linux.id
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.public_subnet_2.id
   vpc_security_group_ids = [aws_security_group.vpc_web_sg.id]
 
@@ -41,8 +56,8 @@ resource "aws_instance" "ordinaryjoe-prod_web_2" {
 
 # Private EC2 Instances (App Tier)
 resource "aws_instance" "ordinaryjoe-prod_app_1" {
-  ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  ami             =  data.aws_ami.latest_amazon_linux.id
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.vpc_app_sg.id]
 
@@ -61,8 +76,8 @@ resource "aws_instance" "ordinaryjoe-prod_app_1" {
 }
 
 resource "aws_instance" "ordinaryjoe-prod_app_2" {
-  ami             = "ami-066a7fbea5161f451"
-  instance_type   = "t3.micro"
+  ami             =  data.aws_ami.latest_amazon_linux.id
+  instance_type   = var.instance_type
   subnet_id       = aws_subnet.private_subnet_2.id
   vpc_security_group_ids = [aws_security_group.vpc_app_sg.id]
 

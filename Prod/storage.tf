@@ -4,9 +4,18 @@ resource "aws_s3_bucket" "ordinaryjoe-prod_app_bucket" {
   bucket = "ordinaryjoe-prod-app-logs-${random_id.bucket_suffix.hex}"
 
   tags = {
-    Name = "bme-uay-app-logs"
+    Name = "ordinaryjoe-prod-app-logs"
   }
 }
+
+resource "aws_s3_bucket" "athena_logs" {
+  bucket = "ordinaryjoe-prod-athena-logs-${random_id.bucket_suffix.hex}"
+  
+  tags = {
+    Name = "ordinaryjoe-prod-athena-logs"
+  }
+}
+
 
 # Enforce ownership controls on the bucket
 resource "aws_s3_bucket_ownership_controls" "ordinaryjoe-prod_app_bucket_ownership_controls" {
@@ -111,7 +120,7 @@ resource "aws_s3_bucket_policy" "ordinaryjoe-prod_app_bucket_policy" {
 
 # EBS Volume for additional storage attached to the web server
 resource "aws_ebs_volume" "ordinaryjoe-prod-app_web_ebs" {
-  availability_zone = "us-west-2a" # Corrected spelling
+  availability_zone = "us-east-2a" # Corrected spelling
   size              = 10              # Size in GB
   tags = {
     Name = "ordinaryjoe-prod-app-web-ebs"

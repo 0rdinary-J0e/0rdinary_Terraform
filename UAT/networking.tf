@@ -4,7 +4,7 @@
 # resource "aws_acm_certificate" "ordinaryjoe_app_cert" {
 #   domain_name       = "bmeevent.com"
 #   validation_method = "DNS"
-#   tags = { Name = "ordinaryjoe-app-cert" }
+#   tags = { Name = "ordinaryjoe-uat-cert" }
 # }
 
 # Route 53 Record for DNS-based certificate validation
@@ -37,33 +37,33 @@ resource "aws_route53_zone" "ordinaryjoe_zone" {
 }
 
 # Public EC2 Instance in a Public Subnet
-resource "aws_instance" "ordinaryjoe_app" {
+resource "aws_instance" "ordinaryjoe-uat-uat" {
   ami                         = "ami-066a7fbea5161f451" # Replace with a valid AMI ID
-  instance_type               = "t3.micro"
+  instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public_subnet_1.id
   security_groups             = [aws_security_group.vpc_web_sg.id] # Ensure this security group is declared
   associate_public_ip_address = true
 
-  tags = { Name = "ordinaryjoe-app-server" }
+  tags = { Name = "ordinaryjoe-uat-server" }
 }
 
 # Load Balancer for HTTP and HTTPS traffic
 resource "aws_lb" "ordinaryjoe_app_lb" {
-  name               = "ordinaryjoe-app-lb"
+  name               = "ordinaryjoe-uat-lb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.vpc_web_sg.id]
   subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
 
-  tags = { Name = "ordinaryjoe-app-lb" }
+  tags = { Name = "ordinaryjoe-uat-lb" }
 }
 
 # Target Group pointing to the EC2 instance
 resource "aws_lb_target_group" "ordinaryjoe_app_tg" {
-  name        = "ordinaryjoe-app-tg"
+  name        = "ordinaryjoe-uat-tg"
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.ordinaryjoe_app.id
+  vpc_id      = aws_vpc.ordinaryjoe-uat-uat.id
   target_type = "instance"
 
   health_check {
@@ -75,13 +75,13 @@ resource "aws_lb_target_group" "ordinaryjoe_app_tg" {
     matcher             = "200-299"
   }
 
-  tags = { Name = "ordinaryjoe-app-tg" }
+  tags = { Name = "ordinaryjoe-uat-tg" }
 }
 
 # Register the EC2 instance with the Target Group
 resource "aws_lb_target_group_attachment" "ordinaryjoe_app_tg_attachment" {
   target_group_arn = aws_lb_target_group.ordinaryjoe_app_tg.arn
-  target_id        = aws_instance.ordinaryjoe_app.id
+  target_id        = aws_instance.ordinaryjoe-uat-uat.id
   port             = 80
 }
 

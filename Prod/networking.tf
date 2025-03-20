@@ -38,7 +38,7 @@ resource "aws_route53_zone" "bmeevent_zone" {
 
 # Public EC2 Instance in a Public Subnet
 resource "aws_instance" "ordinaryjoe-prod_app" {
-  ami                         = "ami-066a7fbea5161f451" # Replace with a valid AMI ID
+  ami                         = data.aws_ami.latest_amazon_linux.id # Replace with a valid AMI ID
   instance_type               = "t3.micro"
   subnet_id                   = aws_subnet.public_subnet_1.id
   security_groups             = [aws_security_group.vpc_web_sg.id] # Ensure this security group is declared

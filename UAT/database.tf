@@ -1,17 +1,17 @@
 # Database Subnet Group with two private subnets for high availability# DB Subnet Group (only one instance of this resource)
 resource "aws_db_subnet_group" "ordinaryjoe_app_subnet_group" {
-  name       = "ordinaryjoe-app-db-subnet-group"
+  name       = "ordinaryjoe-uat-db-subnet-group"
   subnet_ids = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id] # Use private subnets
 
   tags = {
-    Name = "ordinaryjoe-app-db-subnet-group"
+    Name = "ordinaryjoe-uat-db-subnet-group"
   }
 }
 
 # Security Group for the Database to control access
 resource "aws_security_group" "ordinaryjoe_app_db_sg" {
-  name   = "ordinaryjoe-app-db-sg"
-  vpc_id = aws_vpc.ordinaryjoe_app.id  # Corrected VPC reference
+  name   = "ordinaryjoe-uat-db-sg"
+  vpc_id = aws_vpc.ordinaryjoe-uat-uat.id  # Corrected VPC reference
 
   # Allow MySQL access (port 3306) from the web server's security group
   ingress {

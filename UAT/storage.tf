@@ -1,7 +1,7 @@
 # S3 Bucket for application storage with private access
 # S3 Bucket for application storage with private access
 resource "aws_s3_bucket" "ordinaryjoe_app_bucket" {
-  bucket = "ordinaryjoe-app-logs-${random_id.bucket_suffix.hex}"
+  bucket = "ordinaryjoe-uat-logs-${random_id.bucket_suffix.hex}"
 
   tags = {
     Name = "ordinaryjoe-uat-app-logs"
@@ -114,7 +114,7 @@ resource "aws_ebs_volume" "ordinaryjoe-app_web_ebs" {
   availability_zone = "us-west-2a" # Corrected spelling
   size              = 10              # Size in GB
   tags = {
-    Name = "ordinaryjoe-app-web-ebs"
+    Name = "ordinaryjoe-uat-web-ebs"
   }
 }
 
