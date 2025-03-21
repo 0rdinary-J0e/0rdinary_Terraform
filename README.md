@@ -73,7 +73,7 @@ Follow these steps to deploy these terraform files/resources in AWS:
 **Instalation Steps**
      
      1) Clone the Repo
-           git clone https://github.com/macdonald0603/Independent-Books-Online.git
+           git clone https://github.com/0rdinary-J0e/0rdinary_Terraform
      2) Initialize Terraform
            terraform init
      3) Validate the Terraform files (optional but recommended)
